@@ -1,49 +1,102 @@
+import { format, formatDistanceToNow } from "date-fns";
+import ptBR from "date-fns/locale/pt-BR";
+import { FormEvent, useRef, useState } from "react";
+import { usePosts } from "../../../../contexts/PostsContext";
+
+import { PostType } from "../../../../types/Post";
+import { Avatar } from "../../Avatar";
 import { Comment } from "./Comment";
 import { Container } from "./styles";
 
-export const Post = () => {
+export const Post = ({
+    author,
+    publishedAt,
+    content,
+    commentList,
+    id,
+}: PostType) => {
+    const { addNewComment } = usePosts();
+
+    const publishedDateFormatted = format(
+        new Date(publishedAt),
+        "d 'de' LLLL 'às' HH:mm'h'",
+        { locale: ptBR }
+    );
+
+    const publishedDateRelativeNow = formatDistanceToNow(
+        new Date(publishedAt),
+        {
+            locale: ptBR,
+            addSuffix: true,
+        }
+    );
+
+    const [commentText, setCommentText] = useState("");
+    const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+    function handleNewComment(event: FormEvent<HTMLFormElement>) {
+        event.preventDefault();
+
+        addNewComment({
+            postId: id,
+            comment: {
+                author: {
+                    avatarUrl: "https://github.com/brunorguerra.png",
+                    name: "Bruno Guerra",
+                    role: "",
+                },
+                commentedAt: "2022-01-12 17:10:00",
+                content: commentText,
+            },
+        });
+
+        setCommentText("");
+    }
+
     return (
         <Container>
             <header>
                 <div className="author">
-                    <img
-                        className="avatar"
-                        src="https://github.com/diego3g.png"
-                    />
+                    <Avatar imagePath={author.avatarUrl} hasBorder={true} />
                     <div className="authorInfo">
-                        <strong>Diego Fernandes</strong>
-                        <span>Web Developer</span>
+                        <strong>{author.name}</strong>
+                        <span>{author.role}</span>
                     </div>
                 </div>
 
                 <time
-                    title="11 de Maio as 08:13h"
-                    dateTime="2022-05-11 08:13:40"
+                    title={publishedDateFormatted}
+                    dateTime={new Date(publishedAt).toISOString()}
                 >
-                    Publicado há 1h
+                    {publishedDateRelativeNow}
                 </time>
             </header>
 
             <div className="content">
-                <p>Fala galeraa 👋</p>
-                <p>
-                    Acabei de subir mais um projeto no meu portifa. É um projeto
-                    que fiz no NLW Return, evento da Rocketseat. O nome do
-                    projeto é DoctorCare 🚀
-                </p>
-                <p>
-                    👉 <a href="#">jane.design/doctorcare</a>
-                </p>
-                <p>
-                    <a href="#">#novoprojeto</a> <a href="#">#nlw</a>{" "}
-                    <a href="#">#rocketseat</a>
-                </p>
+                {content.map((line, index) => {
+                    if (line.type === "paragraph") {
+                        return <p key={index}>{line.content}</p>;
+                    } else if (line.type === "link") {
+                        return (
+                            <p key={index}>
+                                <a href="">{line.content}</a>
+                            </p>
+                        );
+                    }
+                })}
             </div>
 
-            <form className="commentForm">
+            <form className="commentForm" onSubmit={(e) => handleNewComment(e)}>
                 <strong>Deixe seu feedback</strong>
 
-                <textarea placeholder="Deixe um comentário" />
+                <textarea
+                    placeholder="Deixe um comentário"
+                    value={commentText}
+                    ref={textareaRef}
+                    onChange={() =>
+                        setCommentText(String(textareaRef.current?.value))
+                    }
+                />
 
                 <footer>
                     <button type="submit">Publicar</button>
@@ -51,10 +104,16 @@ export const Post = () => {
             </form>
 
             <div className="commentList">
-                <Comment />
-                <Comment />
-                <Comment />
-                <Comment />
+                {commentList.map((comment) => (
+                    <Comment
+                        author={comment.author}
+                        content={comment.content}
+                        commentedAt={comment.commentedAt}
+                        postId={id}
+                        key={comment.id}
+                        id={comment.id}
+                    />
+                ))}
             </div>
         </Container>
     );

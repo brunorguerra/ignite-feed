@@ -1,16 +1,31 @@
 import { ThumbsUp, Trash } from "phosphor-react";
+import { usePosts } from "../../../../../contexts/PostsContext";
+import { CommentType } from "../../../../../types/Post";
+import { Avatar } from "../../../Avatar";
 import { Container } from "./styles";
 
-export const Comment = () => {
+interface CommentProps extends CommentType {
+    postId: string;
+}
+
+export const Comment = ({
+    id,
+    content,
+    author,
+    commentedAt,
+    postId,
+}: CommentProps) => {
+    const { removeComment } = usePosts();
+
     return (
         <Container>
-            <img src="https://github.com/diego3g.png" />
+            <Avatar imagePath={author.avatarUrl} hasBorder={false} />
 
             <div className="commentBox">
                 <div className="commentContent">
                     <header>
                         <div className="authorAndTime">
-                            <strong>Diego Fernandes</strong>
+                            <strong>{author.name}</strong>
                             <time
                                 title="11 de Maio às 09:23h"
                                 dateTime="2022-05-11 09:23:11"
@@ -19,12 +34,15 @@ export const Comment = () => {
                             </time>
                         </div>
 
-                        <button title="Deletar comentário">
+                        <button
+                            title="Deletar comentário"
+                            onClick={() => removeComment(id, postId)}
+                        >
                             <Trash size={24} />
                         </button>
                     </header>
 
-                    <p>Muito bom Devon, parabéns!!</p>
+                    <p>{content}</p>
                 </div>
                 <footer>
                     <button>

@@ -17,14 +17,6 @@ export const Container = styled.aside`
         flex-direction: column;
         align-items: center;
 
-        img.avatar {
-            width: calc(4.8rem + 12px);
-            height: calc(4.8rem + 12px);
-            border-radius: 0.8rem;
-            border: 4px solid var(--gray-800);
-            outline: 2px solid var(--green-500);
-        }
-
         strong {
             margin-top: 1.6rem;
             color: var(--gray-100);

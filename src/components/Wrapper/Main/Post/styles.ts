@@ -25,14 +25,6 @@ export const Container = styled.article`
             align-items: center;
             gap: 1.6rem;
 
-            .avatar {
-                width: calc(4.8rem + 12px);
-                height: calc(4.8rem + 12px);
-                border-radius: 8px;
-                border: 4px solid var(--gray-800);
-                outline: 2px solid var(--green-500);
-            }
-
             .authorInfo {
                 span,
                 strong {

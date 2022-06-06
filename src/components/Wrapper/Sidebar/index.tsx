@@ -1,5 +1,6 @@
 import { Container } from "./styles";
 import { PencilSimpleLine } from "phosphor-react";
+import { Avatar } from "../Avatar";
 
 export const Sidebar = () => {
     return (
@@ -10,7 +11,10 @@ export const Sidebar = () => {
             />
 
             <div className="profile">
-                <img className="avatar" src="https://github.com/diego3g.png" />
+                <Avatar
+                    imagePath="https://github.com/brunorguerra.png"
+                    hasBorder={true}
+                />
 
                 <strong>Bruno Guerra</strong>
                 <span>Frontend Developer</span>
