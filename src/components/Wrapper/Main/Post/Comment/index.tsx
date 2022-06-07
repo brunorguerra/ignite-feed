@@ -1,8 +1,11 @@
+import { format, formatDistanceToNow } from "date-fns";
+import ptBR from "date-fns/locale/pt-BR";
 import { ThumbsUp, Trash } from "phosphor-react";
+import { useState } from "react";
 import { usePosts } from "../../../../../contexts/PostsContext";
 import { CommentType } from "../../../../../types/Post";
 import { Avatar } from "../../../Avatar";
-import { Container } from "./styles";
+import { ButtonLike, Container } from "./styles";
 
 interface CommentProps extends CommentType {
     postId: string;
@@ -16,6 +19,25 @@ export const Comment = ({
     postId,
 }: CommentProps) => {
     const { removeComment } = usePosts();
+    const [isLiked, setIsLiked] = useState(false);
+
+    const commentedDateFormatted = format(
+        new Date(commentedAt),
+        "d 'de' LLLL 'às' HH:mm'h'",
+        { locale: ptBR }
+    );
+
+    const commentedDateRelativeNow = formatDistanceToNow(
+        new Date(commentedAt),
+        {
+            locale: ptBR,
+            addSuffix: true,
+        }
+    );
+
+    function onLike() {
+        isLiked ? setIsLiked(false) : setIsLiked(true);
+    }
 
     return (
         <Container>
@@ -27,10 +49,10 @@ export const Comment = ({
                         <div className="authorAndTime">
                             <strong>{author.name}</strong>
                             <time
-                                title="11 de Maio às 09:23h"
-                                dateTime="2022-05-11 09:23:11"
+                                title={commentedDateFormatted}
+                                dateTime={new Date(commentedAt).toISOString()}
                             >
-                                Cerca de 1h atrás
+                                {commentedDateRelativeNow}
                             </time>
                         </div>
 
@@ -45,10 +67,13 @@ export const Comment = ({
                     <p>{content}</p>
                 </div>
                 <footer>
-                    <button>
-                        <ThumbsUp />
-                        Aplaudir <span>50</span>
-                    </button>
+                    <ButtonLike onClick={onLike} isLiked={isLiked}>
+                        <ThumbsUp
+                            className="iconThumbsUp"
+                            weight={isLiked ? "fill" : "regular"}
+                        />
+                        Aplaudir <span>{isLiked ? "1" : "0"}</span>
+                    </ButtonLike>
                 </footer>
             </div>
         </Container>

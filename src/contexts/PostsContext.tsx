@@ -16,6 +16,7 @@ interface PostsContextData {
     postsList: PostType[];
     addNewComment: ({}: NewCommentProps) => Promise<void>;
     removeComment: (commentId: string, postId: string) => Promise<void>;
+    addNewPost: ({}: NewPostProps) => Promise<void>;
 }
 
 interface NewCommentProps {
@@ -23,13 +24,32 @@ interface NewCommentProps {
     comment: Omit<CommentType, "id">;
 }
 
+interface NewPostProps {
+    content: string;
+}
+
 const PostsContext = createContext({} as PostsContextData);
 
 export function PostsProvider({ children }: PostsProviderProps) {
     const [postsList, setPostsList] = useState<PostType[]>([]);
 
+    async function addNewPost({ content }: NewPostProps) {
+        const req = await Api.post("/newPost", {
+            author: {
+                avatarUrl: "https://github.com/brunorguerra.png",
+                name: "Bruno Guerra",
+                role: "Frontend Developer",
+            },
+            content: [{ type: "paragraph", content }],
+            publishedAt: String(new Date()),
+            commentList: [],
+        });
+        const { posts } = await req.data;
+        setPostsList(posts);
+    }
+
     async function addNewComment({ postId, comment }: NewCommentProps) {
-        const req = await Api.post(`/posts/${postId}`, { comment });
+        const req = await Api.post(`/addComment/${postId}`, { comment });
         const { posts } = await req.data;
         setPostsList(posts);
     }
@@ -52,7 +72,7 @@ export function PostsProvider({ children }: PostsProviderProps) {
 
     return (
         <PostsContext.Provider
-            value={{ postsList, addNewComment, removeComment }}
+            value={{ postsList, addNewComment, removeComment, addNewPost }}
         >
             {children}
         </PostsContext.Provider>

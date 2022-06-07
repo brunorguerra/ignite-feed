@@ -16,6 +16,8 @@ export const Post = ({
     id,
 }: PostType) => {
     const { addNewComment } = usePosts();
+    const textareaRef = useRef<HTMLTextAreaElement>(null);
+    const [commentText, setCommentText] = useState("");
 
     const publishedDateFormatted = format(
         new Date(publishedAt),
@@ -31,9 +33,6 @@ export const Post = ({
         }
     );
 
-    const [commentText, setCommentText] = useState("");
-    const textareaRef = useRef<HTMLTextAreaElement>(null);
-
     function handleNewComment(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
 
@@ -45,7 +44,7 @@ export const Post = ({
                     name: "Bruno Guerra",
                     role: "",
                 },
-                commentedAt: "2022-01-12 17:10:00",
+                commentedAt: String(new Date()),
                 content: commentText,
             },
         });

@@ -1,4 +1,5 @@
 import { usePosts } from "../../../contexts/PostsContext";
+import { NewPostBox } from "./NewPostBox";
 import { Post } from "./Post";
 import { Container } from "./styles";
 
@@ -7,6 +8,7 @@ export const Main = () => {
 
     return (
         <Container>
+            <NewPostBox />
             {postsList.map((post) => (
                 <Post
                     key={post.id}
