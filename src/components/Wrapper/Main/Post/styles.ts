@@ -107,8 +107,12 @@ export const Container = styled.article`
 
                 transition: all 0.15s ease;
 
-                &:hover {
+                &:not(:disabled):hover {
                     background: var(--green-300);
+                }
+                &:disabled {
+                    opacity: 0.7;
+                    cursor: not-allowed;
                 }
             }
         }

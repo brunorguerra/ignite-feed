@@ -53,6 +53,8 @@ export const Post = ({
         setCommentText("");
     }
 
+    const isValueCommentEmpty = commentText.trim().length === 0;
+
     return (
         <Container>
             <header>
@@ -93,13 +95,16 @@ export const Post = ({
                     placeholder="Deixe um comentário"
                     value={commentText}
                     ref={textareaRef}
+                    required
                     onChange={() =>
                         setCommentText(String(textareaRef.current?.value))
                     }
                 />
 
                 <footer>
-                    <button type="submit">Publicar</button>
+                    <button type="submit" disabled={isValueCommentEmpty}>
+                        Publicar
+                    </button>
                 </footer>
             </form>
 
