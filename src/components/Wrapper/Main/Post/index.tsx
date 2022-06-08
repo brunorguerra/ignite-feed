@@ -1,12 +1,13 @@
 import { format, formatDistanceToNow } from "date-fns";
 import ptBR from "date-fns/locale/pt-BR";
+import { DotsThree } from "phosphor-react";
 import { FormEvent, useRef, useState } from "react";
 import { usePosts } from "../../../../contexts/PostsContext";
 
 import { PostType } from "../../../../types/Post";
 import { Avatar } from "../../Avatar";
 import { Comment } from "./Comment";
-import { Container } from "./styles";
+import { Configuration, Container } from "./styles";
 
 export const Post = ({
     author,
@@ -15,9 +16,11 @@ export const Post = ({
     commentList,
     id,
 }: PostType) => {
-    const { addNewComment } = usePosts();
+    const { addNewComment, removePost } = usePosts();
+
     const textareaRef = useRef<HTMLTextAreaElement>(null);
     const [commentText, setCommentText] = useState("");
+    const [isPostModalActive, setIsPostModalActive] = useState(false);
 
     const publishedDateFormatted = format(
         new Date(publishedAt),
@@ -52,6 +55,12 @@ export const Post = ({
         setCommentText("");
     }
 
+    function handlePostModal() {
+        isPostModalActive
+            ? setIsPostModalActive(false)
+            : setIsPostModalActive(true);
+    }
+
     const isValueCommentEmpty = commentText.trim().length === 0;
 
     return (
@@ -65,12 +74,24 @@ export const Post = ({
                     </div>
                 </div>
 
-                <time
-                    title={publishedDateFormatted}
-                    dateTime={new Date(publishedAt).toISOString()}
-                >
-                    {publishedDateRelativeNow}
-                </time>
+                <Configuration isModalActive={isPostModalActive}>
+                    <div className="config">
+                        <button onClick={handlePostModal}>
+                            <DotsThree />
+                        </button>
+                        <div className="menu-config">
+                            <button onClick={() => removePost(id)}>
+                                Excluir
+                            </button>
+                        </div>
+                    </div>
+                    <time
+                        title={publishedDateFormatted}
+                        dateTime={new Date(publishedAt).toISOString()}
+                    >
+                        {publishedDateRelativeNow}
+                    </time>
+                </Configuration>
             </header>
 
             <div className="content">

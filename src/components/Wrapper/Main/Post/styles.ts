@@ -1,5 +1,9 @@
 import styled from "styled-components";
 
+interface ConfigurationProps {
+    isModalActive: boolean;
+}
+
 export const Container = styled.article`
     background: var(--gray-800);
     border-radius: 8px;
@@ -14,11 +18,6 @@ export const Container = styled.article`
         display: flex;
         align-items: center;
         justify-content: space-between;
-
-        time {
-            font-size: 1.4rem;
-            color: var(--gray-400);
-        }
 
         .author {
             display: flex;
@@ -127,5 +126,64 @@ export const Container = styled.article`
 
     .commentList {
         margin-top: 3.2rem;
+    }
+`;
+
+export const Configuration = styled.div<ConfigurationProps>`
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 1rem;
+
+    .config {
+        position: relative;
+
+        button {
+            background: transparent;
+            color: var(--gray-400);
+
+            width: 3rem;
+            height: 3rem;
+
+            font-size: 3rem;
+            line-height: 0;
+            cursor: pointer;
+
+            border: 0;
+            border-radius: 10%;
+        }
+        .menu-config {
+            position: absolute;
+            right: 0;
+            top: 4rem;
+
+            width: 10rem;
+            height: 7rem;
+            background-color: var(--gray-900);
+            padding: 2rem 0;
+
+            display: flex;
+            justify-content: center;
+            border-radius: 4px 0 4px 4px;
+
+            visibility: ${({ isModalActive }) =>
+                isModalActive ? "visible" : "hidden"};
+            opacity: ${({ isModalActive }) => (isModalActive ? "1" : "0")};
+
+            transition: all 0.15s ease;
+
+            button {
+                width: 5rem;
+                font-size: 1.6rem;
+                &:hover {
+                    color: var(--white);
+                }
+            }
+        }
+    }
+
+    time {
+        font-size: 1.4rem;
+        color: var(--gray-400);
     }
 `;

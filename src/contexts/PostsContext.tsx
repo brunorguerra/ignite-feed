@@ -17,6 +17,7 @@ interface PostsContextData {
     addNewComment: ({}: NewCommentProps) => Promise<void>;
     removeComment: (commentId: string, postId: string) => Promise<void>;
     addNewPost: ({}: NewPostProps) => Promise<void>;
+    removePost: (postId: string) => Promise<void>;
 }
 
 interface NewCommentProps {
@@ -48,6 +49,12 @@ export function PostsProvider({ children }: PostsProviderProps) {
         setPostsList(posts);
     }
 
+    async function removePost(postId: string) {
+        const req = await Api.delete(`/removePost/${postId}`);
+        const { posts } = await req.data;
+        setPostsList(posts);
+    }
+
     async function addNewComment({ postId, comment }: NewCommentProps) {
         const req = await Api.post(`/addComment/${postId}`, { comment });
         const { posts } = await req.data;
@@ -72,7 +79,13 @@ export function PostsProvider({ children }: PostsProviderProps) {
 
     return (
         <PostsContext.Provider
-            value={{ postsList, addNewComment, removeComment, addNewPost }}
+            value={{
+                postsList,
+                addNewComment,
+                removeComment,
+                addNewPost,
+                removePost,
+            }}
         >
             {children}
         </PostsContext.Provider>
