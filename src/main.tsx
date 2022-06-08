@@ -44,11 +44,17 @@ createServer({
         this.namespace = "api";
 
         this.get("/posts", (schema, request) => {
+            const posts = JSON.parse(String(localStorage.getItem("posts")));
+
+            schema.db.loadData({ posts });
+
             return schema.all("post");
         });
 
         this.post("/newPost", (schema, request) => {
             const post = JSON.parse(request.requestBody);
+
+            localStorage.setItem("posts", JSON.stringify([post]));
 
             schema.create("post", post);
 
