@@ -44,7 +44,7 @@ createServer({
         this.namespace = "api";
 
         this.get("/posts", (schema, request) => {
-            const posts = JSON.parse(String(localStorage.getItem("posts")));
+            const posts = JSON.parse(localStorage.getItem("posts") ?? "[]");
 
             schema.db.loadData({ posts });
 
