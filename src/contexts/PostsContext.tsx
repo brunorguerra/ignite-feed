@@ -61,19 +61,13 @@ export function PostsProvider({ children }: PostsProviderProps) {
     }
 
     useEffect(() => {
-        return () => {
-            try {
-                async function getAllPosts() {
-                    const req = await Api.get("/posts");
-                    const { posts } = await req.data;
-                    setPostsList(posts);
-                }
+        async function getAllPosts() {
+            const req = await Api.get("/posts");
+            const { posts } = await req.data;
+            setPostsList(posts);
+        }
 
-                getAllPosts();
-            } catch (error) {
-                console.log(error);
-            }
-        };
+        getAllPosts();
     }, []);
 
     return (
