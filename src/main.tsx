@@ -65,42 +65,42 @@ createServer({
             return schema.all("post");
         });
 
-        this.post("/addComment/:postId", (schema, request) => {
-            const postId = request.params.postId;
-            const post = schema.db.posts.find(postId);
+        // this.post("/addComment/:postId", (schema, request) => {
+        //     const postId = request.params.postId;
+        //     const post = schema.db.posts.find(postId);
 
-            const commentsAmount = post.commentList.length;
+        //     const commentsAmount = post.commentList.length;
 
-            const { comment } = JSON.parse(request.requestBody);
-            comment.id = String(commentsAmount + 1);
+        //     const { comment } = JSON.parse(request.requestBody);
+        //     comment.id = String(commentsAmount + 1);
 
-            post.commentList.push(comment);
+        //     post.commentList.push(comment);
 
-            const newPostsList = schema.db.posts;
+        //     const newPostsList = schema.db.posts;
 
-            localStorage.setItem("posts", JSON.stringify(newPostsList));
+        //     localStorage.setItem("posts", JSON.stringify(newPostsList));
 
-            return schema.all("post");
-        });
+        //     return schema.all("post");
+        // });
 
-        this.delete("/posts/:postId/:commentId", (schema, request) => {
-            const postId = request.params.postId;
-            const commentId = request.params.commentId;
+        // this.delete("/posts/:postId/:commentId", (schema, request) => {
+        //     const postId = request.params.postId;
+        //     const commentId = request.params.commentId;
 
-            const post = schema.db.posts.find(postId);
+        //     const post = schema.db.posts.find(postId);
 
-            const commentIndexToDelete = post.commentList.findIndex(
-                (comment: CommentType) => comment.id === commentId
-            );
+        //     const commentIndexToDelete = post.commentList.findIndex(
+        //         (comment: CommentType) => comment.id === commentId
+        //     );
 
-            post.commentList.splice(commentIndexToDelete, 1);
+        //     post.commentList.splice(commentIndexToDelete, 1);
 
-            const newPostsList = schema.db.posts;
+        //     const newPostsList = schema.db.posts;
 
-            localStorage.setItem("posts", JSON.stringify(newPostsList));
+        //     localStorage.setItem("posts", JSON.stringify(newPostsList));
 
-            return schema.all("post");
-        });
+        //     return schema.all("post");
+        // });
     },
 });
 
