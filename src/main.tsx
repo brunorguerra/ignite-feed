@@ -53,10 +53,14 @@ createServer({
 
         this.post("/newPost", (schema, request) => {
             const newPost = JSON.parse(request.requestBody);
+            const lastPostList = schema.db.posts;
 
             schema.create("post", newPost);
 
-            localStorage.setItem("posts", JSON.stringify(schema.db.posts));
+            localStorage.setItem(
+                "posts",
+                JSON.stringify([...lastPostList, newPost])
+            );
 
             return schema.all("post");
         });
@@ -72,7 +76,9 @@ createServer({
 
             post.commentList.push(comment);
 
-            localStorage.setItem("posts", JSON.stringify(schema.db.posts));
+            const newPostsList = schema.db.posts;
+
+            localStorage.setItem("posts", JSON.stringify(newPostsList));
 
             return schema.all("post");
         });
@@ -89,7 +95,9 @@ createServer({
 
             post.commentList.splice(commentIndexToDelete, 1);
 
-            localStorage.setItem("posts", JSON.stringify(schema.db.posts));
+            const newPostsList = schema.db.posts;
+
+            localStorage.setItem("posts", JSON.stringify(newPostsList));
 
             return schema.all("post");
         });
