@@ -4,7 +4,7 @@ import App from "./App";
 import { GlobalStyle } from "./styles/global";
 
 import { createServer, Model } from "miragejs";
-import { CommentType, PostType } from "./types/Post";
+import { CommentType } from "./types/Post";
 
 createServer({
     models: {
@@ -14,29 +14,6 @@ createServer({
     seeds(server) {
         server.db.loadData({
             posts: [],
-            users: [
-                {
-                    id: "1",
-                    avatarUrl:
-                        "https://t.ctcdn.com.br/IVlt3nVuXYDVX4vyjzgborR84H0=/400x400/smart/i490793.jpeg",
-                    name: "Robert John Downey",
-                    role: "Actor of Iron Man",
-                },
-                {
-                    id: "2",
-                    avatarUrl:
-                        "https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Elon_Musk_Royal_Society_%28crop2%29.jpg/200px-Elon_Musk_Royal_Society_%28crop2%29.jpg",
-                    name: "Elon Reeve Musk",
-                    role: "Founder at SpaceX and CTO @ Tesla Inc",
-                },
-                {
-                    id: "3",
-                    avatarUrl:
-                        "https://cms.somosfanaticos.com/__export/1653391611384/sites/fanaticos/img/2022/05/24/gettyimages-1397604799.jpg_1055622710.jpg",
-                    name: "Paulo Exequiel Dybala",
-                    role: "Professional Player Soccer at Juventus",
-                },
-            ],
         });
     },
 
@@ -78,8 +55,7 @@ createServer({
         });
 
         this.delete("/posts/:postId/:commentId", (schema, request) => {
-            const postId = request.params.postId;
-            const commentId = request.params.commentId;
+            const { postId, commentId } = request.params;
 
             const post = schema.db.posts.find(postId);
 

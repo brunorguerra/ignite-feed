@@ -35,7 +35,7 @@ export const Comment = ({
         }
     );
 
-    function onLike() {
+    function handleLike() {
         isLiked ? setIsLiked(false) : setIsLiked(true);
     }
 
@@ -67,7 +67,7 @@ export const Comment = ({
                     <p>{content}</p>
                 </div>
                 <footer>
-                    <ButtonLike onClick={onLike} isLiked={isLiked}>
+                    <ButtonLike onClick={handleLike} isLiked={isLiked}>
                         <ThumbsUp
                             className="iconThumbsUp"
                             weight={isLiked ? "fill" : "regular"}

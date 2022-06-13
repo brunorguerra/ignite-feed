@@ -17,10 +17,9 @@ export const Post = ({
     id,
 }: PostType) => {
     const { addNewComment, removePost } = usePosts();
-
-    const textareaRef = useRef<HTMLTextAreaElement>(null);
     const [commentText, setCommentText] = useState("");
     const [isPostModalActive, setIsPostModalActive] = useState(false);
+    const textareaRef = useRef<HTMLTextAreaElement>(null);
 
     const publishedDateFormatted = format(
         new Date(publishedAt),
